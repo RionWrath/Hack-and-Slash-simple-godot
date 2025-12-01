@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://7nqghsiqrs8r"]
+
+[ext_resource type="Script" uid="uid://dnfd2jdihlg6e" path="res://Script/skill_effect.gd" id="1_bb3h5"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ltfcd"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5l43j"]
+
+[node name="SkillEffect" type="Area3D"]
+disable_mode = 2
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("1_bb3h5")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(8.35017, 0, 0, 0, 4.44118, 0, 0, 0, 1.00373, 0, 0, 0)
+mesh = SubResource("BoxMesh_ltfcd")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(8.35017, 0, 0, 0, 4.44118, 0, 0, 0, 1.00373, 0, 0, 0)
+shape = SubResource("BoxShape3D_5l43j")
+
+[node name="LifetimeTimer" type="Timer" parent="."]
+one_shot = true

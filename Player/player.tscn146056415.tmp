@@ -1,0 +1,166 @@
+[gd_scene load_steps=26 format=3 uid="uid://db8ixjuhda4h7"]
+
+[ext_resource type="PackedScene" uid="uid://ma7dute82aa8" path="res://Player/PlayerAsset/character_model.tscn" id="1_l8h54"]
+[ext_resource type="Script" uid="uid://cml03nqnf4gow" path="res://Player/Player Script/player.gd" id="1_od3ui"]
+[ext_resource type="Animation" uid="uid://4fcfqu1662xh" path="res://Player/PlayerAsset/Animation/idle.anim" id="2_k53q1"]
+[ext_resource type="Animation" uid="uid://0v6hx6b5mdqh" path="res://Player/PlayerAsset/Animation/running.anim" id="4_vtle1"]
+[ext_resource type="Animation" uid="uid://cjoc4do6qxv28" path="res://Player/PlayerAsset/Animation/walking.anim" id="5_od3ui"]
+[ext_resource type="Animation" uid="uid://cchm25r8pikgc" path="res://Player/PlayerAsset/Animation/Crouch_Idle.anim" id="6_vtle1"]
+[ext_resource type="Animation" uid="uid://buxniyf55npjx" path="res://Player/PlayerAsset/Animation/Jump_fix.anim.res" id="7_00tjw"]
+[ext_resource type="Animation" uid="uid://ca7qh655shpno" path="res://Player/PlayerAsset/Animation/Crouch_walking.anim" id="7_od3ui"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4ntmi"]
+radius = 0.163949
+height = 1.61698
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_00tjw"]
+_data = {
+&"Crouch": ExtResource("6_vtle1"),
+&"Crouch_walk": ExtResource("7_od3ui"),
+&"Jump_fix.anim": ExtResource("7_00tjw"),
+&"idle": ExtResource("2_k53q1"),
+&"running": ExtResource("4_vtle1"),
+&"walking": ExtResource("5_od3ui")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_x3vf3"]
+animation = &"Player Animation/Crouch"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_5htga"]
+animation = &"Player Animation/Crouch_walk"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_p5o4e"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_x3vf3")
+blend_point_0/pos = 0.0
+blend_point_1/node = SubResource("AnimationNodeAnimation_5htga")
+blend_point_1/pos = 1.0
+min_space = 0.0
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_apopc"]
+animation = &"Player Animation/Jump_fix.anim"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_vtle1"]
+animation = &"Player Animation/idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_od3ui"]
+animation = &"Player Animation/walking"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_00tjw"]
+animation = &"Player Animation/running"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_x3vf3"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_vtle1")
+blend_point_0/pos = 0.0
+blend_point_1/node = SubResource("AnimationNodeAnimation_od3ui")
+blend_point_1/pos = 1.0
+blend_point_2/node = SubResource("AnimationNodeAnimation_00tjw")
+blend_point_2/pos = 2.0
+min_space = 0.0
+max_space = 2.0
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5htga"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_gu6f8"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dkpta"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_p5o4e"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lfmf2"]
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_x3vf3"]
+states/CrouchMovement/node = SubResource("AnimationNodeBlendSpace1D_p5o4e")
+states/CrouchMovement/position = Vector2(638, 199)
+states/Jump/node = SubResource("AnimationNodeAnimation_apopc")
+states/Jump/position = Vector2(693, 91)
+states/Movement/node = SubResource("AnimationNodeBlendSpace1D_x3vf3")
+states/Movement/position = Vector2(417, 100)
+states/Start/position = Vector2(209, 100)
+transitions = ["Start", "Movement", SubResource("AnimationNodeStateMachineTransition_5htga"), "Movement", "CrouchMovement", SubResource("AnimationNodeStateMachineTransition_gu6f8"), "CrouchMovement", "Movement", SubResource("AnimationNodeStateMachineTransition_dkpta"), "Movement", "Jump", SubResource("AnimationNodeStateMachineTransition_p5o4e"), "Jump", "Movement", SubResource("AnimationNodeStateMachineTransition_lfmf2")]
+
+[sub_resource type="GDScript" id="GDScript_od3ui"]
+script/source = "# CameraController.gd
+extends SpringArm3D
+
+@export var mouse_sensitivity: float = 0.25
+
+var _mouse_input: Vector2 = Vector2.ZERO
+
+func _ready() -> void:
+	# Kunci dan sembunyikan kursor mouse saat game dimulai
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+func _input(event: InputEvent) -> void:
+	# Toggle untuk membebaskan/mengunci kursor mouse dengan tombol Esc
+	if event.is_action_pressed(\"ui_cancel\"):
+		if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		else:
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+func _unhandled_input(event: InputEvent) -> void:
+	# Tangkap gerakan mouse jika kursor terkunci
+	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+		_mouse_input = event.relative
+
+func _physics_process(delta: float) -> void:
+	# Rotasi horizontal (mengorbit player) pada sumbu Y
+	rotate_y(deg_to_rad(-_mouse_input.x * mouse_sensitivity))
+	# Rotasi vertikal (tilt atas/bawah) pada sumbu X
+	rotate_x(deg_to_rad(-_mouse_input.y * mouse_sensitivity))
+	# Batasi rotasi vertikal agar kamera tidak terbalik
+	rotation.x = clamp(rotation.x, deg_to_rad(-60), deg_to_rad(45))
+	
+	_mouse_input = Vector2.ZERO
+"
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_od3ui")
+move_speed = 2.0
+run_speed = 4.0
+crouch_speed = null
+jump_impulse = 4.0
+rotation_speed = null
+stand_height = null
+crouch_height = null
+footstep_sounds = null
+footstep_interval = null
+voice_sounds = null
+voice_interval_min = null
+voice_interval_max = null
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1.06527, 0, 0, 0, 0.914663, 0, 0.801413, 0.0130006)
+shape = SubResource("CapsuleShape3D_4ntmi")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../Skin")
+libraries = {
+&"Player Animation": SubResource("AnimationLibrary_00tjw")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+root_node = NodePath("../Skin")
+tree_root = SubResource("AnimationNodeStateMachine_x3vf3")
+anim_player = NodePath("../AnimationPlayer")
+parameters/CrouchMovement/blend_position = 0.991983
+parameters/Movement/blend_position = 0.998288
+
+[node name="Skin" parent="." instance=ExtResource("1_l8h54")]
+
+[node name="SpringArm3D" type="SpringArm3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.50351, -3.33164)
+spring_length = 2.76
+script = SubResource("GDScript_od3ui")
+
+[node name="Camera3D" type="Camera3D" parent="SpringArm3D"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="FootstepPlayer" type="AudioStreamPlayer3D" parent="."]
+
+[node name="JumpLandPlayer" type="AudioStreamPlayer3D" parent="."]
+
+[node name="VoicePlayer" type="AudioStreamPlayer3D" parent="."]
+
+[node name="VoiceTimer" type="Timer" parent="."]

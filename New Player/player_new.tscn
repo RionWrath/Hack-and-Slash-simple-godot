@@ -1,0 +1,451 @@
+[gd_scene load_steps=87 format=3 uid="uid://bfs8d6ya45q7n"]
+
+[ext_resource type="Script" uid="uid://b7ryrvnou3yy7" path="res://New Player/player_new.gd" id="1_2uc70"]
+[ext_resource type="PackedScene" uid="uid://dwg3n0esf1i5v" path="res://Player/PlayerAsset/Man_01_02.fbx" id="2_wppwb"]
+[ext_resource type="PackedScene" uid="uid://bmwkqysg302g3" path="res://Object/Sword_big.fbx" id="3_fpeaj"]
+[ext_resource type="Animation" uid="uid://0gdg8dwp60lg" path="res://Player/New Player Animation/Combat Anim/Attack1.anim.res" id="3_we2bi"]
+[ext_resource type="Script" uid="uid://yrw2od6yq6bl" path="res://New Player/Script/Hitbox.gd" id="4_ax14f"]
+[ext_resource type="Animation" uid="uid://ddkc2kye47i67" path="res://Player/New Player Animation/Combat Anim/Attack2.anim.res" id="4_fpeaj"]
+[ext_resource type="Script" uid="uid://c4jnob7p2vw3l" path="res://New Player/Script/HealthComponent.gd" id="5_6sbd8"]
+[ext_resource type="Animation" uid="uid://b53hap3ntvlpp" path="res://Player/New Player Animation/Combat Anim/Attack3.anim.res" id="5_6sxnr"]
+[ext_resource type="Animation" uid="uid://deu61h8gy36hx" path="res://Player/New Player Animation/Combat Anim/Combat_Idle.anim.res" id="6_pjsj3"]
+[ext_resource type="Animation" uid="uid://dfv8tmemupudx" path="res://Player/New Player Animation/Combat Anim/Combat_Jump.anim.res" id="7_ax14f"]
+[ext_resource type="Animation" uid="uid://nt25bvn6rjc1" path="res://Player/New Player Animation/Combat Anim/Combat_Jump_Run.anim.res" id="8_6sbd8"]
+[ext_resource type="Animation" uid="uid://dshbo2x2u3v2h" path="res://Player/New Player Animation/Combat Anim/Combat_Run.anim.res" id="9_6vj5u"]
+[ext_resource type="Animation" uid="uid://cl85xn18nhsq2" path="res://Player/New Player Animation/Combat Anim/Combat_Walk.anim.res" id="10_ga48t"]
+[ext_resource type="Animation" uid="uid://cgcunj7l1pnsv" path="res://Player/New Player Animation/Combat Anim/Draw_sword.anim.res" id="11_jy8oo"]
+[ext_resource type="Animation" uid="uid://d4kc7g2vppcv" path="res://Player/New Player Animation/Combat Anim/Sheath_Sword.anim.res" id="12_jqq8a"]
+[ext_resource type="Animation" uid="uid://djwv45cw0e28c" path="res://Player/New Player Animation/attack3fix.anim.res" id="13_we2bi"]
+[ext_resource type="Animation" uid="uid://bmu4uotojh3ax" path="res://Player/New Player Animation/CrouchToStanding.anim.res" id="13_xbf17"]
+[ext_resource type="Animation" uid="uid://62iditma652c" path="res://Player/New Player Animation/Crouch_idle.anim.res" id="14_6tpck"]
+[ext_resource type="Animation" uid="uid://u0du6uql7ps6" path="res://Player/New Player Animation/Combat Anim/Combat_Idle2.anim.res" id="14_fpeaj"]
+[ext_resource type="Animation" uid="uid://dhvfvxu0e48vc" path="res://Player/New Player Animation/crouch_Walk.anim.res" id="15_n3noq"]
+[ext_resource type="Animation" uid="uid://cnxmma2j38f60" path="res://New Player/idle Sword ril.anim.res" id="16_6sxnr"]
+[ext_resource type="Animation" uid="uid://d0bmusdyeavt8" path="res://Player/New Player Animation/standing_to_crouch.anim.res" id="16_25upd"]
+[ext_resource type="Animation" uid="uid://7wqgbgafgwiu" path="res://Player/New Player Animation/Jump_running.anim.res" id="17_dnjuq"]
+[ext_resource type="Animation" uid="uid://b778ad133vwqk" path="res://Player/New Player Animation/Walk.anim.res" id="18_44qwb"]
+[ext_resource type="Animation" uid="uid://clxytqgagxwdn" path="res://Player/New Player Animation/idle.anim.res" id="19_hmt5b"]
+[ext_resource type="Animation" uid="uid://ds3s0hjdvi611" path="res://Player/New Player Animation/jump.anim.res" id="20_1tmea"]
+[ext_resource type="Animation" uid="uid://8uc68a1a3pme" path="res://Player/New Player Animation/run.anim.res" id="21_iirwk"]
+[ext_resource type="Animation" uid="uid://bdmsyqusybbf5" path="res://New Player/Anim/playerDeath.anim.res" id="23_6vj5u"]
+[ext_resource type="Animation" uid="uid://ddriosc5rhlok" path="res://New Player/Anim/PlayerHurt.anim.res" id="24_ga48t"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6sxnr"]
+size = Vector3(0.352829, 2.03758, 0.0969543)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4ntmi"]
+radius = 0.163949
+height = 1.61698
+
+[sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_od3ui"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6sxnr"]
+radius = 0.4125
+height = 1.87584
+
+[sub_resource type="Animation" id="Animation_ax14f"]
+length = 0.001
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("metarig")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ax14f"]
+_data = {
+&"RESET": SubResource("Animation_ax14f")
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qs4pp"]
+_data = {
+&"Attack1.anim": ExtResource("3_we2bi"),
+&"Attack2.anim": ExtResource("4_fpeaj"),
+&"Attack3.anim": ExtResource("5_6sxnr"),
+&"Combat_Idle.anim": ExtResource("6_pjsj3"),
+&"Combat_Idle2.anim": ExtResource("14_fpeaj"),
+&"Combat_Jump.anim": ExtResource("7_ax14f"),
+&"Combat_Jump_run.anim": ExtResource("8_6sbd8"),
+&"Combat_Run.anim": ExtResource("9_6vj5u"),
+&"Combat_Walk.anim": ExtResource("10_ga48t"),
+&"DrawSword.anim": ExtResource("11_jy8oo"),
+&"SheathSword.anim": ExtResource("12_jqq8a"),
+&"attack3fix.anim": ExtResource("13_we2bi"),
+&"idle Sword ril.anim": ExtResource("16_6sxnr")
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_iyprq"]
+_data = {
+&"CrouchToStanding.anim": ExtResource("13_xbf17"),
+&"Crouch_idle.anim": ExtResource("14_6tpck"),
+&"crouch_Walk.anim": ExtResource("15_n3noq"),
+&"standing_to_crouch.anim": ExtResource("16_25upd")
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jy8oo"]
+_data = {
+&"PlayerHurt.anim": ExtResource("24_ga48t"),
+&"playerDeath.anim": ExtResource("23_6vj5u")
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_gwnis"]
+_data = {
+&"Jump_running.anim": ExtResource("17_dnjuq"),
+&"Walk.anim": ExtResource("18_44qwb"),
+&"idle.anim": ExtResource("19_hmt5b"),
+&"jump.anim": ExtResource("20_1tmea"),
+&"run.anim": ExtResource("21_iirwk")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qemgg"]
+animation = &"Combat Anim/Attack1.anim"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_efx54"]
+animation = &"Combat Anim/Attack2.anim"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_i4o1l"]
+animation = &"Combat Anim/attack3fix.anim"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_hshwv"]
+animation = &"Crouch Anim/Crouch_idle.anim"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_gpjlu"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_8mwp6"]
+nodes/Animation/node = SubResource("AnimationNodeAnimation_hshwv")
+nodes/Animation/position = Vector2(269, 161)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_gpjlu")
+nodes/TimeScale/position = Vector2(640, 180)
+nodes/output/position = Vector2(880, 180)
+node_connections = [&"TimeScale", 0, &"Animation", &"output", 0, &"TimeScale"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8viyr"]
+animation = &"Crouch Anim/crouch_Walk.anim"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_sm0op"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_76lrf"]
+nodes/Animation/node = SubResource("AnimationNodeAnimation_8viyr")
+nodes/Animation/position = Vector2(300, 195)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_sm0op")
+nodes/TimeScale/position = Vector2(660, 180)
+nodes/output/position = Vector2(920, 180)
+node_connections = [&"TimeScale", 0, &"Animation", &"output", 0, &"TimeScale"]
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_efx54"]
+blend_point_0/node = SubResource("AnimationNodeBlendTree_8mwp6")
+blend_point_0/pos = 0.0
+blend_point_1/node = SubResource("AnimationNodeBlendTree_76lrf")
+blend_point_1/pos = 1.0
+min_space = 0.0
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_gpjlu"]
+animation = &"Crouch Anim/CrouchToStanding.anim"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jqq8a"]
+animation = &"Die and Hurt Anim/playerDeath.anim"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_xbf17"]
+animation = &"Die and Hurt Anim/PlayerHurt.anim"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_sm0op"]
+animation = &"Crouch Anim/standing_to_crouch.anim"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_j2n6q"]
+animation = &"Combat Anim/Combat_Jump.anim"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_c6x0f"]
+animation = &"Combat Anim/Combat_Jump_run.anim"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8mwp6"]
+animation = &"Combat Anim/idle Sword ril.anim"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_qemgg"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_8viyr"]
+graph_offset = Vector2(51, -7)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_8mwp6")
+nodes/Animation/position = Vector2(220, 40)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_qemgg")
+nodes/TimeScale/position = Vector2(580, 60)
+nodes/output/position = Vector2(780, 60)
+node_connections = [&"TimeScale", 0, &"Animation", &"output", 0, &"TimeScale"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_76lrf"]
+animation = &"Combat Anim/Combat_Walk.anim"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_efx54"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_755ss"]
+nodes/Animation/node = SubResource("AnimationNodeAnimation_76lrf")
+nodes/Animation/position = Vector2(200, 40)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_efx54")
+nodes/TimeScale/position = Vector2(520, 60)
+nodes/output/position = Vector2(820, 40)
+node_connections = [&"TimeScale", 0, &"Animation", &"output", 0, &"TimeScale"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_bbimk"]
+animation = &"Combat Anim/Combat_Run.anim"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_m0h3t"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_i4o1l"]
+graph_offset = Vector2(9, 7)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_bbimk")
+nodes/Animation/position = Vector2(220, 40)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_m0h3t")
+nodes/TimeScale/position = Vector2(540, 80)
+nodes/output/position = Vector2(760, 100)
+node_connections = [&"TimeScale", 0, &"Animation", &"output", 0, &"TimeScale"]
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_hshwv"]
+resource_local_to_scene = true
+blend_point_0/node = SubResource("AnimationNodeBlendTree_8viyr")
+blend_point_0/pos = 0.0
+blend_point_1/node = SubResource("AnimationNodeBlendTree_755ss")
+blend_point_1/pos = 0.5
+blend_point_2/node = SubResource("AnimationNodeBlendTree_i4o1l")
+blend_point_2/pos = 2.0
+min_space = 0.0
+max_space = 2.0
+sync = true
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qs4pp"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_iyprq"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_f4lon"]
+xfade_time = 0.1
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8ynux"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_d30e8"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6pogt"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ie76m"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dy65m"]
+xfade_time = 1.0
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_maysp"]
+xfade_time = 1.0
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_jp1hh"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bbimk"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_755ss"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2uc70"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wppwb"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_we2bi"]
+xfade_time = 1.0
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6tpck"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_n3noq"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_25upd"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6vj5u"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_x3vf3"]
+states/Attack1/node = SubResource("AnimationNodeAnimation_qemgg")
+states/Attack1/position = Vector2(371, -66)
+states/Attack2/node = SubResource("AnimationNodeAnimation_efx54")
+states/Attack2/position = Vector2(528, -66)
+states/Attack3/node = SubResource("AnimationNodeAnimation_i4o1l")
+states/Attack3/position = Vector2(676, -55)
+states/CrouchMovement/node = SubResource("AnimationNodeBlendSpace1D_efx54")
+states/CrouchMovement/position = Vector2(206, 348)
+states/CrouchToIdle/node = SubResource("AnimationNodeAnimation_gpjlu")
+states/CrouchToIdle/position = Vector2(346, 270)
+states/Die/node = SubResource("AnimationNodeAnimation_jqq8a")
+states/Die/position = Vector2(823.917, 211)
+states/End/position = Vector2(1388, 191)
+states/Hurt/node = SubResource("AnimationNodeAnimation_xbf17")
+states/Hurt/position = Vector2(465.917, 211)
+states/IdleToCrouch/node = SubResource("AnimationNodeAnimation_sm0op")
+states/IdleToCrouch/position = Vector2(112, 264)
+states/Jump/node = SubResource("AnimationNodeAnimation_j2n6q")
+states/Jump/position = Vector2(631, 15)
+states/JumpRun/node = SubResource("AnimationNodeAnimation_c6x0f")
+states/JumpRun/position = Vector2(766, 100)
+states/Movement/node = SubResource("AnimationNodeBlendSpace1D_hshwv")
+states/Movement/position = Vector2(346, 94)
+states/Start/position = Vector2(105, 60)
+transitions = ["Attack2", "Movement", SubResource("AnimationNodeStateMachineTransition_qs4pp"), "Attack1", "Movement", SubResource("AnimationNodeStateMachineTransition_iyprq"), "Attack3", "Movement", SubResource("AnimationNodeStateMachineTransition_f4lon"), "Movement", "Jump", SubResource("AnimationNodeStateMachineTransition_8ynux"), "Jump", "Movement", SubResource("AnimationNodeStateMachineTransition_d30e8"), "JumpRun", "Movement", SubResource("AnimationNodeStateMachineTransition_6pogt"), "Movement", "JumpRun", SubResource("AnimationNodeStateMachineTransition_ie76m"), "Attack1", "Attack2", SubResource("AnimationNodeStateMachineTransition_dy65m"), "Attack2", "Attack3", SubResource("AnimationNodeStateMachineTransition_maysp"), "Movement", "Attack1", SubResource("AnimationNodeStateMachineTransition_jp1hh"), "CrouchMovement", "CrouchToIdle", SubResource("AnimationNodeStateMachineTransition_bbimk"), "IdleToCrouch", "CrouchMovement", SubResource("AnimationNodeStateMachineTransition_755ss"), "Start", "Movement", SubResource("AnimationNodeStateMachineTransition_2uc70"), "Movement", "IdleToCrouch", SubResource("AnimationNodeStateMachineTransition_wppwb"), "CrouchToIdle", "Movement", SubResource("AnimationNodeStateMachineTransition_we2bi"), "Movement", "Die", SubResource("AnimationNodeStateMachineTransition_6tpck"), "Movement", "Hurt", SubResource("AnimationNodeStateMachineTransition_n3noq"), "Hurt", "Movement", SubResource("AnimationNodeStateMachineTransition_25upd"), "Die", "End", SubResource("AnimationNodeStateMachineTransition_6vj5u")]
+graph_offset = Vector2(-12.083, -164)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_6vj5u"]
+
+[node name="Player" type="CharacterBody3D" groups=["player"]]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_2uc70")
+
+[node name="Skin" parent="." instance=ExtResource("2_wppwb")]
+transform = Transform3D(-0.908354, 0, -8.74228e-08, 0, 0.908354, 0, 7.94108e-08, 0, -1, 0, 0.02139, 0.0882841)
+
+[node name="metarig" parent="Skin" index="0"]
+transform = Transform3D(99.9999, 0, 0, 0, 100, 0, 0, 0, 100, 0.168464, -0.135066, -0.133433)
+
+[node name="Skeleton3D" parent="Skin/metarig" index="0"]
+bones/1/rotation = Quaternion(0.00712296, 0.0304503, -0.0145759, 0.999405)
+bones/2/rotation = Quaternion(-0.0211437, 0.0120812, 0.0136596, 0.99961)
+bones/3/rotation = Quaternion(-0.0314935, 0.00987157, 0.0100879, 0.999404)
+bones/4/rotation = Quaternion(0.403741, 0.0261867, -0.0123929, 0.914415)
+bones/5/rotation = Quaternion(-0.290317, 0.0243225, -0.0157399, 0.956492)
+bones/7/rotation = Quaternion(-0.138697, 0.108739, 0.896193, -0.407158)
+bones/8/rotation = Quaternion(0.634675, -0.285952, -0.201845, 0.688969)
+bones/9/rotation = Quaternion(-0.0416953, -0.0105657, -0.0715955, 0.996506)
+bones/10/rotation = Quaternion(0.537309, 0.598043, -0.318079, 0.502463)
+bones/11/rotation = Quaternion(0.538083, 0.0112339, 0.0943069, 0.837524)
+bones/12/rotation = Quaternion(0.568733, -0.0109417, 0.0301822, 0.821895)
+bones/14/rotation = Quaternion(0.289256, 0.896614, 0.315437, -0.113645)
+bones/15/rotation = Quaternion(0.141536, 0.083851, 0.00567251, 0.986359)
+bones/16/rotation = Quaternion(0.0290135, 0.458818, 0.244796, 0.85365)
+bones/18/rotation = Quaternion(0.511339, 0.518429, -0.416927, 0.544)
+bones/19/rotation = Quaternion(0.610939, -0.00909848, 0.0406039, 0.790583)
+bones/20/rotation = Quaternion(0.550051, -0.0145295, -0.0448288, 0.833801)
+bones/22/rotation = Quaternion(0.489921, 0.473518, -0.471012, 0.560273)
+bones/23/rotation = Quaternion(0.508916, -0.0284406, -0.0454641, 0.859144)
+bones/24/rotation = Quaternion(0.577845, -0.0461756, -0.115908, 0.806553)
+bones/26/rotation = Quaternion(0.421931, 0.394174, -0.497276, 0.647547)
+bones/27/rotation = Quaternion(0.575839, -0.0108024, -0.15572, 0.802523)
+bones/28/rotation = Quaternion(0.392604, -0.0122856, -0.117729, 0.912059)
+bones/30/rotation = Quaternion(-0.182472, -0.0664192, 0.897075, 0.396925)
+bones/31/rotation = Quaternion(0.578507, 0.0794852, 0.0511417, 0.810183)
+bones/32/rotation = Quaternion(0.19763, 0.049812, 0.121957, 0.971384)
+bones/33/rotation = Quaternion(0.368968, -0.654848, 0.296672, 0.589087)
+bones/34/rotation = Quaternion(0.542998, -0.0115057, -0.0947729, 0.834289)
+bones/35/rotation = Quaternion(0.495108, 0.0100744, -0.0278514, 0.868327)
+bones/37/rotation = Quaternion(-0.422109, 0.882092, 0.0837069, 0.191651)
+bones/38/rotation = Quaternion(-0.000852876, -0.0902274, 0.107389, 0.990114)
+bones/39/rotation = Quaternion(0.165397, 0.119583, 0.117806, 0.971836)
+bones/41/rotation = Quaternion(0.414256, -0.612313, 0.327208, 0.588557)
+bones/42/rotation = Quaternion(0.671366, 0.00428748, -0.0391904, 0.740077)
+bones/43/rotation = Quaternion(0.280131, 0.0219724, 0.0305623, 0.959224)
+bones/45/rotation = Quaternion(0.416041, -0.541701, 0.438109, 0.584406)
+bones/46/rotation = Quaternion(0.595076, 0.0214409, 0.0518339, 0.801709)
+bones/47/rotation = Quaternion(0.327515, 0.0499205, 0.0709903, 0.940852)
+bones/49/rotation = Quaternion(0.454529, -0.453149, 0.477686, 0.599896)
+bones/50/rotation = Quaternion(0.44136, 0.0119898, 0.119364, 0.889275)
+bones/51/rotation = Quaternion(0.214727, 0.0131622, 0.0643092, 0.974466)
+bones/53/rotation = Quaternion(0.756866, 0.159937, -0.370943, 0.513786)
+bones/54/rotation = Quaternion(0.438443, 0.146414, -0.0183908, 0.886562)
+bones/55/rotation = Quaternion(-0.344182, -0.0416247, 0.0989266, 0.932749)
+bones/56/rotation = Quaternion(-0.0080276, 0.913088, -0.405126, -0.0455865)
+bones/58/rotation = Quaternion(0.888274, -0.21736, 0.25574, 0.313563)
+bones/59/rotation = Quaternion(0.402991, -0.0220168, 0.0758565, 0.911789)
+bones/60/rotation = Quaternion(-0.445227, 0.0999774, -0.267298, 0.848723)
+bones/61/rotation = Quaternion(-0.00503476, 0.920975, -0.389404, 0.0120304)
+
+[node name="BoneAttachment3D" type="BoneAttachment3D" parent="Skin/metarig/Skeleton3D" index="0"]
+transform = Transform3D(-0.872047, -0.109943, 0.476913, 0.0879506, -0.993782, -0.0682778, 0.481454, -0.0175967, 0.876295, -0.00474989, -0.00239462, 0.0128091)
+bone_name = "hand.R"
+bone_idx = 32
+
+[node name="Sword_big2" parent="Skin/metarig/Skeleton3D/BoneAttachment3D" instance=ExtResource("3_fpeaj")]
+transform = Transform3D(0.0011564, -0.000424912, -0.00318091, -0.00345595, 0.000602115, -0.00110302, 0.000706982, 0.00363834, -0.000188948, -7.88155e-05, 0.000464946, -0.00113415)
+
+[node name="Hitbox" type="Area3D" parent="Skin/metarig/Skeleton3D/BoneAttachment3D/Sword_big2"]
+transform = Transform3D(0.999878, -0.00405398, 0.0136914, 0.00400752, 0.999987, 0.00281489, -0.0166074, -0.00334454, 0.999882, -0.048532, -0.0194308, 0.0131679)
+collision_layer = 64
+collision_mask = 32
+script = ExtResource("4_ax14f")
+damage = 20.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Skin/metarig/Skeleton3D/BoneAttachment3D/Sword_big2/Hitbox"]
+transform = Transform3D(1, -1.37091e-06, -3.42727e-07, -1.19209e-07, 1, 1.46031e-06, -1.95205e-06, 1.93715e-06, 1, 0.0108797, 1.54585, 0.00458622)
+shape = SubResource("BoxShape3D_6sxnr")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1.06527, 0, 0, 0, 0.914663, 0, 0.888685, 0)
+shape = SubResource("CapsuleShape3D_4ntmi")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+collision_mask = 3
+shape = SubResource("SeparationRayShape3D_od3ui")
+spring_length = 2.305
+
+[node name="Camera3D" type="Camera3D" parent="SpringArm3D"]
+
+[node name="Hurtbox" type="Area3D" parent="."]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox"]
+transform = Transform3D(0.767381, 0, 0, 0, 0.767381, 0, 0, 0, 0.767381, 0, 0.893234, 0.131508)
+shape = SubResource("CapsuleShape3D_6sxnr")
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("5_6sbd8")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../Skin")
+libraries = {
+&"": SubResource("AnimationLibrary_ax14f"),
+&"Combat Anim": SubResource("AnimationLibrary_qs4pp"),
+&"Crouch Anim": SubResource("AnimationLibrary_iyprq"),
+&"Die and Hurt Anim": SubResource("AnimationLibrary_jy8oo"),
+&"Movement Anim": SubResource("AnimationLibrary_gwnis")
+}
+speed_scale = 1.5
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+root_node = NodePath("../Skin")
+tree_root = SubResource("AnimationNodeStateMachine_x3vf3")
+anim_player = NodePath("../AnimationPlayer")
+parameters/CrouchMovement/blend_position = 0
+parameters/CrouchMovement/0/TimeScale/scale = 1.0
+parameters/CrouchMovement/1/TimeScale/scale = 1.0
+parameters/Movement/blend_position = -0.127976
+parameters/Movement/0/TimeScale/scale = 1.0
+parameters/Movement/1/TimeScale/scale = 1.0
+parameters/Movement/2/TimeScale/scale = 1.0
+
+[node name="FootstepPlayer" type="AudioStreamPlayer3D" parent="."]
+
+[node name="JumpLandPlayer" type="AudioStreamPlayer3D" parent="."]
+
+[node name="VoicePlayer" type="AudioStreamPlayer3D" parent="."]
+
+[node name="HurtTimer" type="Timer" parent="."]
+
+[node name="ComboTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="TargetingArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TargetingArea"]
+transform = Transform3D(7.57474, 0, 0, 0, 7.57474, 0, 0, 0, 7.57474, 0, 0, 0)
+shape = SubResource("SphereShape3D_6vj5u")
+
+[connection signal="area_entered" from="Skin/metarig/Skeleton3D/BoneAttachment3D/Sword_big2/Hitbox" to="Skin/metarig/Skeleton3D/BoneAttachment3D/Sword_big2/Hitbox" method="_on_area_entered"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+
+[editable path="Skin"]

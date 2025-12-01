@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://bn7uqgrtxf7p4"]
+
+[ext_resource type="Script" uid="uid://cmxyjcidkfj2e" path="res://New Player/Script/DamageNumber.gd" id="1_0afod"]
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_0afod")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00195301, 0, 0)
+billboard = 1
+modulate = Color(0.543465, 0.0177773, 0.131082, 1)
+outline_modulate = Color(0.18359, 0.18359, 0.18359, 1)
+text = "100"
+font_size = 64

@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://cpwvn0avy0w0g"]
+
+[ext_resource type="PackedScene" uid="uid://sgki1hwr2evh" path="res://Player/uploads_files_5432871_textures/new Char.fbx" id="1_jki4g"]
+
+[node name="new Char" instance=ExtResource("1_jki4g")]

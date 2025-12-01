@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://b7t0c8o5q81g5"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r47he"]
+albedo_color = Color(0.344612, 0.358464, 0.361789, 1)
+
+[node name="Floor" type="Node3D"]
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(41.9794, 0, 0, 0, 2.15231, 0, 0, 0, 41.9794, 0, 0, 0)
+material = SubResource("StandardMaterial3D_r47he")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.22737, -4.19536)
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="CSGCombiner3D"]
+transform = Transform3D(3.67508, 0, 0, 0, 1.55373, 0, 0, 0, 1.55373, -2.44536, 1.04619, -1.07391)
+polygon = PackedVector2Array(0, 0, 0, 1, 0.55767, 0.447917, 1, 0)

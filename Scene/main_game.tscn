@@ -1,0 +1,68 @@
+[gd_scene load_steps=5 format=3 uid="uid://cmcc370ymueu5"]
+
+[ext_resource type="PackedScene" uid="uid://bfs8d6ya45q7n" path="res://New Player/player_new.tscn" id="2_vh4eo"]
+[ext_resource type="PackedScene" uid="uid://vp7vpukmulns" path="res://Scene/hud.tscn" id="3_1btii"]
+[ext_resource type="PackedScene" uid="uid://cij121lnxfjeh" path="res://Enemy/enemy1.tscn" id="3_htkpn"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_vh4eo"]
+vertices = PackedVector3Array(-31.6378, 1, -25.4945, -31.6378, 1, 25.5055, 31.6122, 1, 25.5055, 31.6122, 1, -25.4945)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
+
+[node name="Main Game" type="Node"]
+
+[node name="HUD" parent="." instance=ExtResource("3_1btii")]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.666806, 0.745232, 0, -0.745232, -0.666806, 0, 17.3301, 0)
+shadow_enabled = true
+
+[node name="Player" parent="." instance=ExtResource("2_vh4eo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.61107, 1.07615, 8.37204)
+attack_animation_speed = 100.0
+run_speed = 5.0
+jump_impulse = 3.0
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.85194)
+navigation_mesh = SubResource("NavigationMesh_vh4eo")
+enter_cost = 1.0
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="NavigationRegion3D"]
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="NavigationRegion3D/CSGCombiner3D"]
+transform = Transform3D(64.2757, 0, 0, 0, 1, 0, 0, 0, 51.989, 0, 0, 0)
+
+[node name="ENEMY" type="Node" parent="."]
+
+[node name="Enemy" parent="ENEMY" instance=ExtResource("3_htkpn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.43908, 0.640825, 1.47427)
+attack_range = 1.0
+
+[node name="Enemy2" parent="ENEMY" instance=ExtResource("3_htkpn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.8782, 0.609321, 2.94854)
+attack_range = 1.0
+
+[node name="Enemy3" parent="ENEMY" instance=ExtResource("3_htkpn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.796, 0.609321, -2.12995)
+attack_range = 1.0
+
+[node name="Enemy4" parent="ENEMY" instance=ExtResource("3_htkpn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.68804, 0.609321, -2.12995)
+attack_range = 1.0
+
+[node name="MapObject" type="Node" parent="."]
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="MapObject"]
+transform = Transform3D(3.22993, 0, 0, 0, 1.82472, 0, 0, 0, 1.82472, 2.53225, 0.496769, 3.9817)
+use_collision = true
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="MapObject/CSGCombiner3D"]
+polygon = PackedVector2Array(0, 0, 0.369254, 0.374564, 1, 1, 1, 0)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="MapObject/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.51189, 0.498538, -0.497372)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="MapObject/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.11572, 0.488208, -0.497372)
+size = Vector3(1.22253, 1, 1)

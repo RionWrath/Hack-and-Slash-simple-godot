@@ -1,0 +1,423 @@
+[gd_scene load_steps=95 format=3 uid="uid://db8ixjuhda4h7"]
+
+[ext_resource type="Script" uid="uid://cktygte6go2jk" path="res://Player/Player Script/PlayerController.gd" id="1_7emwf"]
+[ext_resource type="PackedScene" uid="uid://dwg3n0esf1i5v" path="res://Player/PlayerAsset/Man_01_02.fbx" id="2_btcbx"]
+[ext_resource type="Animation" uid="uid://0gdg8dwp60lg" path="res://Player/New Player Animation/Combat Anim/Attack1.anim.res" id="3_7emwf"]
+[ext_resource type="Animation" uid="uid://clxytqgagxwdn" path="res://Player/New Player Animation/idle.anim.res" id="3_btcbx"]
+[ext_resource type="Animation" uid="uid://ddkc2kye47i67" path="res://Player/New Player Animation/Combat Anim/Attack2.anim.res" id="4_hshwv"]
+[ext_resource type="Animation" uid="uid://b778ad133vwqk" path="res://Player/New Player Animation/Walk.anim.res" id="4_k53q1"]
+[ext_resource type="Animation" uid="uid://8uc68a1a3pme" path="res://Player/New Player Animation/run.anim.res" id="5_fhl08"]
+[ext_resource type="Animation" uid="uid://b53hap3ntvlpp" path="res://Player/New Player Animation/Combat Anim/Attack3.anim.res" id="5_gpjlu"]
+[ext_resource type="Animation" uid="uid://deu61h8gy36hx" path="res://Player/New Player Animation/Combat Anim/Combat_Idle.anim.res" id="6_8mwp6"]
+[ext_resource type="Animation" uid="uid://dshbo2x2u3v2h" path="res://Player/New Player Animation/Combat Anim/Combat_Run.anim.res" id="7_qemgg"]
+[ext_resource type="Animation" uid="uid://cl85xn18nhsq2" path="res://Player/New Player Animation/Combat Anim/Combat_Walk.anim.res" id="8_8viyr"]
+[ext_resource type="Animation" uid="uid://cgcunj7l1pnsv" path="res://Player/New Player Animation/Combat Anim/Draw_sword.anim.res" id="9_sm0op"]
+[ext_resource type="Animation" uid="uid://d4kc7g2vppcv" path="res://Player/New Player Animation/Combat Anim/Sheath_Sword.anim.res" id="10_76lrf"]
+[ext_resource type="Animation" uid="uid://nt25bvn6rjc1" path="res://Player/New Player Animation/Combat Anim/Combat_Jump_Run.anim.res" id="11_efx54"]
+[ext_resource type="Animation" uid="uid://dfv8tmemupudx" path="res://Player/New Player Animation/Combat Anim/Combat_Jump.anim.res" id="12_755ss"]
+[ext_resource type="Animation" uid="uid://bmu4uotojh3ax" path="res://Player/New Player Animation/CrouchToStanding.anim.res" id="13_bbimk"]
+[ext_resource type="Animation" uid="uid://62iditma652c" path="res://Player/New Player Animation/Crouch_idle.anim.res" id="14_m0h3t"]
+[ext_resource type="Animation" uid="uid://dhvfvxu0e48vc" path="res://Player/New Player Animation/crouch_Walk.anim.res" id="15_i4o1l"]
+[ext_resource type="Animation" uid="uid://d0bmusdyeavt8" path="res://Player/New Player Animation/standing_to_crouch.anim.res" id="16_j2n6q"]
+[ext_resource type="Animation" uid="uid://7wqgbgafgwiu" path="res://Player/New Player Animation/Jump_running.anim.res" id="20_c6x0f"]
+[ext_resource type="Animation" uid="uid://ds3s0hjdvi611" path="res://Player/New Player Animation/jump.anim.res" id="21_jp1hh"]
+[ext_resource type="Script" uid="uid://cml03nqnf4gow" path="res://Player/Player Script/CombatController.gd" id="22_hshwv"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4ntmi"]
+radius = 0.163949
+height = 1.61698
+
+[sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_od3ui"]
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qs4pp"]
+_data = {
+&"Attack1.anim": ExtResource("3_7emwf"),
+&"Attack2.anim": ExtResource("4_hshwv"),
+&"Attack3.anim": ExtResource("5_gpjlu"),
+&"Combat_Idle.anim": ExtResource("6_8mwp6"),
+&"Combat_Jump.anim": ExtResource("12_755ss"),
+&"Combat_Jump_run.anim": ExtResource("11_efx54"),
+&"Combat_Run.anim": ExtResource("7_qemgg"),
+&"Combat_Walk.anim": ExtResource("8_8viyr"),
+&"Draw_sword.anim": ExtResource("9_sm0op"),
+&"Sheath_Sword.anim": ExtResource("10_76lrf")
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_iyprq"]
+_data = {
+&"CrouchToStanding.anim": ExtResource("13_bbimk"),
+&"Crouch_idle.anim": ExtResource("14_m0h3t"),
+&"crouch_Walk.anim": ExtResource("15_i4o1l"),
+&"standing_to_crouch.anim": ExtResource("16_j2n6q")
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_gwnis"]
+_data = {
+&"Jump_running.anim": ExtResource("20_c6x0f"),
+&"Walk.anim": ExtResource("4_k53q1"),
+&"idle.anim": ExtResource("3_btcbx"),
+&"jump.anim": ExtResource("21_jp1hh"),
+&"run.anim": ExtResource("5_fhl08")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8mwp6"]
+animation = &"Combat Anim/Attack1.anim"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qemgg"]
+animation = &"Combat Anim/Attack2.anim"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_bbimk"]
+animation = &"Combat Anim/Attack3.anim"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_i4o1l"]
+animation = &"Combat Anim/Combat_Jump.anim"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_j2n6q"]
+animation = &"Combat Anim/Combat_Jump_run.anim"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_c6x0f"]
+animation = &"Combat Anim/Combat_Idle.anim"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_jp1hh"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_qs4pp"]
+nodes/Animation/node = SubResource("AnimationNodeAnimation_c6x0f")
+nodes/Animation/position = Vector2(180, 160)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_jp1hh")
+nodes/TimeScale/position = Vector2(480, 180)
+nodes/output/position = Vector2(700, 200)
+node_connections = [&"TimeScale", 0, &"Animation", &"output", 0, &"TimeScale"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_iyprq"]
+animation = &"Combat Anim/Combat_Walk.anim"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_f4lon"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_8ynux"]
+nodes/Animation/node = SubResource("AnimationNodeAnimation_iyprq")
+nodes/Animation/position = Vector2(120, 120)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_f4lon")
+nodes/TimeScale/position = Vector2(420, 140)
+nodes/output/position = Vector2(680, 240)
+node_connections = [&"TimeScale", 0, &"Animation", &"output", 0, &"TimeScale"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_d30e8"]
+animation = &"Combat Anim/Combat_Run.anim"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_6pogt"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_ie76m"]
+nodes/Animation/node = SubResource("AnimationNodeAnimation_d30e8")
+nodes/Animation/position = Vector2(140, 140)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_6pogt")
+nodes/TimeScale/position = Vector2(420, 140)
+nodes/output/position = Vector2(620, 220)
+node_connections = [&"TimeScale", 0, &"Animation", &"output", 0, &"TimeScale"]
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_dy65m"]
+blend_point_0/node = SubResource("AnimationNodeBlendTree_qs4pp")
+blend_point_0/pos = 0.0
+blend_point_1/node = SubResource("AnimationNodeBlendTree_8ynux")
+blend_point_1/pos = 1.0
+blend_point_2/node = SubResource("AnimationNodeBlendTree_ie76m")
+blend_point_2/pos = 2.0
+min_space = 0.0
+max_space = 2.0
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_maysp"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1l10g"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6rl0i"]
+xfade_time = 1.5
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7x5p2"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6eb1q"]
+xfade_time = 1.0
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wvbyc"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_gvnt1"]
+xfade_time = 1.0
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1kmt7"]
+xfade_time = 1.0
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_c4i3b"]
+xfade_time = 2.0
+reset = false
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_uvbbp"]
+xfade_time = 2.0
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7v2uk"]
+xfade_time = 2.0
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_7emwf"]
+states/Attack1/node = SubResource("AnimationNodeAnimation_8mwp6")
+states/Attack1/position = Vector2(498, -37)
+states/Attack2/node = SubResource("AnimationNodeAnimation_qemgg")
+states/Attack2/position = Vector2(664, -37)
+states/Attack3/node = SubResource("AnimationNodeAnimation_bbimk")
+states/Attack3/position = Vector2(664, 71)
+states/CombatJump/node = SubResource("AnimationNodeAnimation_i4o1l")
+states/CombatJump/position = Vector2(228, 232)
+states/CombatJumpRun/node = SubResource("AnimationNodeAnimation_j2n6q")
+states/CombatJumpRun/position = Vector2(535, 280)
+states/CombatMovement/node = SubResource("AnimationNodeBlendSpace1D_dy65m")
+states/CombatMovement/position = Vector2(420, 91)
+states/End/position = Vector2(891, 91)
+states/Start/position = Vector2(200, 110)
+transitions = ["Start", "CombatMovement", SubResource("AnimationNodeStateMachineTransition_maysp"), "CombatMovement", "CombatJump", SubResource("AnimationNodeStateMachineTransition_1l10g"), "CombatJump", "CombatMovement", SubResource("AnimationNodeStateMachineTransition_6rl0i"), "CombatMovement", "CombatJumpRun", SubResource("AnimationNodeStateMachineTransition_7x5p2"), "CombatJumpRun", "CombatMovement", SubResource("AnimationNodeStateMachineTransition_6eb1q"), "CombatMovement", "Attack1", SubResource("AnimationNodeStateMachineTransition_wvbyc"), "Attack1", "Attack2", SubResource("AnimationNodeStateMachineTransition_gvnt1"), "Attack2", "Attack3", SubResource("AnimationNodeStateMachineTransition_1kmt7"), "Attack1", "CombatMovement", SubResource("AnimationNodeStateMachineTransition_c4i3b"), "Attack2", "CombatMovement", SubResource("AnimationNodeStateMachineTransition_uvbbp"), "Attack3", "CombatMovement", SubResource("AnimationNodeStateMachineTransition_7v2uk")]
+graph_offset = Vector2(-134, 58)
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_m6nl3"]
+animation = &"Combat Anim/Draw_sword.anim"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_gpjlu"]
+animation = &"Crouch Anim/Crouch_idle.anim"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_8mwp6"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_qemgg"]
+nodes/Animation/node = SubResource("AnimationNodeAnimation_gpjlu")
+nodes/Animation/position = Vector2(216, 114)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_8mwp6")
+nodes/TimeScale/position = Vector2(562, 160)
+nodes/output/position = Vector2(800, 180)
+node_connections = [&"TimeScale", 0, &"Animation", &"output", 0, &"TimeScale"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_sm0op"]
+animation = &"Crouch Anim/crouch_Walk.anim"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_76lrf"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_efx54"]
+nodes/Animation/node = SubResource("AnimationNodeAnimation_sm0op")
+nodes/Animation/position = Vector2(140, 140)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_76lrf")
+nodes/TimeScale/position = Vector2(510, 127)
+nodes/output/position = Vector2(760, 220)
+node_connections = [&"TimeScale", 0, &"Animation", &"output", 0, &"TimeScale"]
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_755ss"]
+blend_point_0/node = SubResource("AnimationNodeBlendTree_qemgg")
+blend_point_0/pos = 0.0
+blend_point_1/node = SubResource("AnimationNodeBlendTree_efx54")
+blend_point_1/pos = 1.0
+min_space = 0.0
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_76lrf"]
+animation = &"Crouch Anim/CrouchToStanding.anim"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_755ss"]
+animation = &"Crouch Anim/standing_to_crouch.anim"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_m0h3t"]
+animation = &"Movement Anim/jump.anim"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jp1hh"]
+animation = &"Movement Anim/Jump_running.anim"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_hshwv"]
+animation = &"Movement Anim/idle.anim"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_gpjlu"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_8mwp6"]
+"nodes/Idle Stabd/node" = SubResource("AnimationNodeAnimation_hshwv")
+"nodes/Idle Stabd/position" = Vector2(200, 140)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_gpjlu")
+nodes/TimeScale/position = Vector2(480, 160)
+nodes/output/position = Vector2(680, 220)
+node_connections = [&"TimeScale", 0, &"Idle Stabd", &"output", 0, &"TimeScale"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8viyr"]
+animation = &"Movement Anim/Walk.anim"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_sm0op"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_76lrf"]
+nodes/Animation/node = SubResource("AnimationNodeAnimation_8viyr")
+nodes/Animation/position = Vector2(280, 120)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_sm0op")
+nodes/TimeScale/position = Vector2(567, 156)
+nodes/output/position = Vector2(780, 220)
+node_connections = [&"TimeScale", 0, &"Animation", &"output", 0, &"TimeScale"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_efx54"]
+animation = &"Movement Anim/run.anim"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_755ss"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_bbimk"]
+nodes/Animation/node = SubResource("AnimationNodeAnimation_efx54")
+nodes/Animation/position = Vector2(240, 140)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_755ss")
+nodes/TimeScale/position = Vector2(500, 160)
+nodes/output/position = Vector2(660, 220)
+node_connections = [&"TimeScale", 0, &"Animation", &"output", 0, &"TimeScale"]
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_m0h3t"]
+blend_point_0/node = SubResource("AnimationNodeBlendTree_8mwp6")
+blend_point_0/pos = 0.0
+blend_point_1/node = SubResource("AnimationNodeBlendTree_76lrf")
+blend_point_1/pos = 1.0
+blend_point_2/node = SubResource("AnimationNodeBlendTree_bbimk")
+blend_point_2/pos = 2.0
+min_space = 0.0
+max_space = 2.0
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qs4pp"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_f4lon"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8ynux"]
+xfade_time = 2.0
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_d30e8"]
+xfade_time = 2.1
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6pogt"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bbimk"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_m0h3t"]
+xfade_time = 1.0
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_i4o1l"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_j2n6q"]
+xfade_time = 1.0
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_i4o1l"]
+states/CrouchMovement/node = SubResource("AnimationNodeBlendSpace1D_755ss")
+states/CrouchMovement/position = Vector2(463, 340)
+states/CrouchToIdle/node = SubResource("AnimationNodeAnimation_76lrf")
+states/CrouchToIdle/position = Vector2(515, 230)
+states/IdleToCrouch/node = SubResource("AnimationNodeAnimation_755ss")
+states/IdleToCrouch/position = Vector2(325, 230)
+states/Jump/node = SubResource("AnimationNodeAnimation_m0h3t")
+states/Jump/position = Vector2(463, -4)
+states/JumpRun/node = SubResource("AnimationNodeAnimation_jp1hh")
+states/JumpRun/position = Vector2(625, 143)
+states/Movement/node = SubResource("AnimationNodeBlendSpace1D_m0h3t")
+states/Movement/position = Vector2(401, 100)
+transitions = ["Start", "Movement", SubResource("AnimationNodeStateMachineTransition_qs4pp"), "Movement", "Jump", SubResource("AnimationNodeStateMachineTransition_f4lon"), "Jump", "Movement", SubResource("AnimationNodeStateMachineTransition_8ynux"), "JumpRun", "Movement", SubResource("AnimationNodeStateMachineTransition_d30e8"), "Movement", "JumpRun", SubResource("AnimationNodeStateMachineTransition_6pogt"), "Movement", "IdleToCrouch", SubResource("AnimationNodeStateMachineTransition_bbimk"), "IdleToCrouch", "CrouchMovement", SubResource("AnimationNodeStateMachineTransition_m0h3t"), "CrouchMovement", "CrouchToIdle", SubResource("AnimationNodeStateMachineTransition_i4o1l"), "CrouchToIdle", "Movement", SubResource("AnimationNodeStateMachineTransition_j2n6q")]
+graph_offset = Vector2(-78, -30)
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8hx1r"]
+animation = &"Combat Anim/Sheath_Sword.anim"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ntwt4"]
+xfade_time = 1.2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kdg72"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dy65m"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_m6nl3"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8hx1r"]
+xfade_time = 1.7
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_x3vf3"]
+states/CombatMode/node = SubResource("AnimationNodeStateMachine_7emwf")
+states/CombatMode/position = Vector2(864, 128)
+states/DrawSword/node = SubResource("AnimationNodeAnimation_m6nl3")
+states/DrawSword/position = Vector2(607, 83)
+states/End/position = Vector2(1095, 163)
+states/NonCombat/node = SubResource("AnimationNodeStateMachine_i4o1l")
+states/NonCombat/position = Vector2(339, 139)
+states/SheathSword/node = SubResource("AnimationNodeAnimation_8hx1r")
+states/SheathSword/position = Vector2(619, 191)
+states/Start/position = Vector2(163, 154)
+transitions = ["DrawSword", "CombatMode", SubResource("AnimationNodeStateMachineTransition_ntwt4"), "CombatMode", "SheathSword", SubResource("AnimationNodeStateMachineTransition_kdg72"), "Start", "NonCombat", SubResource("AnimationNodeStateMachineTransition_dy65m"), "NonCombat", "DrawSword", SubResource("AnimationNodeStateMachineTransition_m6nl3"), "SheathSword", "NonCombat", SubResource("AnimationNodeStateMachineTransition_8hx1r")]
+graph_offset = Vector2(29, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hshwv"]
+transparency = 1
+albedo_color = Color(0.224963, 4.52429e-05, 0.825985, 0.109804)
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_7emwf")
+move_speed = 2.0
+run_speed = 4.0
+jump_impulse = 4.0
+
+[node name="Skin" parent="." instance=ExtResource("2_btcbx")]
+transform = Transform3D(-0.908354, 0, -8.74228e-08, 0, 0.908354, 0, 7.94108e-08, 0, -1, 0, 0.02139, 0.0882841)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1.06527, 0, 0, 0, 0.914663, 0, 0.888685, 0)
+shape = SubResource("CapsuleShape3D_4ntmi")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+collision_mask = 3
+shape = SubResource("SeparationRayShape3D_od3ui")
+spring_length = 2.305
+
+[node name="Camera3D" type="Camera3D" parent="SpringArm3D"]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../Skin")
+libraries = {
+&"Combat Anim": SubResource("AnimationLibrary_qs4pp"),
+&"Crouch Anim": SubResource("AnimationLibrary_iyprq"),
+&"Movement Anim": SubResource("AnimationLibrary_gwnis")
+}
+speed_scale = 1.3
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+root_node = NodePath("../Skin")
+tree_root = SubResource("AnimationNodeStateMachine_x3vf3")
+anim_player = NodePath("../AnimationPlayer")
+parameters/CombatMode/CombatMovement/blend_position = -0.273535
+parameters/CombatMode/CombatMovement/0/TimeScale/scale = 1.0
+parameters/CombatMode/CombatMovement/1/TimeScale/scale = 1.0
+parameters/CombatMode/CombatMovement/2/TimeScale/scale = 1.0
+parameters/NonCombat/CrouchMovement/blend_position = -0.0582822
+parameters/NonCombat/CrouchMovement/0/TimeScale/scale = 1.0
+parameters/NonCombat/CrouchMovement/1/TimeScale/scale = 1.0
+parameters/NonCombat/Movement/blend_position = -0.108896
+parameters/NonCombat/Movement/0/TimeScale/scale = 1.0
+parameters/NonCombat/Movement/1/TimeScale/scale = 1.0
+parameters/NonCombat/Movement/2/TimeScale/scale = 1.0
+
+[node name="FootstepPlayer" type="AudioStreamPlayer3D" parent="."]
+
+[node name="JumpLandPlayer" type="AudioStreamPlayer3D" parent="."]
+
+[node name="VoicePlayer" type="AudioStreamPlayer3D" parent="."]
+
+[node name="VoiceTimer" type="Timer" parent="."]
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1.61729, -0.000624867, -0.00212895, 0.000919956, 0.999656, -0.0262235, 0.00346846, 0.0262222, 0.999654, 0, 1.39978, -0.951904)
+visible = false
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.339111, 0.107666)
+visible = false
+size = Vector3(1, 1.67822, 0.784668)
+material = SubResource("StandardMaterial3D_hshwv")
+
+[node name="CombatController" type="Node" parent="." node_paths=PackedStringArray("animation_tree")]
+script = ExtResource("22_hshwv")
+animation_tree = NodePath("../AnimationTree")
+
+[node name="ComboTimer" type="Timer" parent="CombatController"]
