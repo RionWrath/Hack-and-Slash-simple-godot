@@ -3,8 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://ctm67sw265j6c" path="res://Enemy/Medieval Base.fbx" id="1_2m5b2"]
 [ext_resource type="Script" uid="uid://cjiypriu7rgau" path="res://Enemy/enemy_1.gd" id="1_aj68k"]
 [ext_resource type="AnimationLibrary" uid="uid://sfwv46gcr4vm" path="res://Enemy/Medieval anim.fbx" id="2_txxp0"]
-[ext_resource type="Script" uid="uid://c4jnob7p2vw3l" path="res://New Player/Script/HealthComponent.gd" id="3_l03h4"]
-[ext_resource type="Script" uid="uid://yrw2od6yq6bl" path="res://New Player/Script/Hitbox.gd" id="3_rjd80"]
+[ext_resource type="Script" uid="uid://c4jnob7p2vw3l" path="res://Main Player/Script/HealthComponent.gd" id="3_l03h4"]
+[ext_resource type="Script" uid="uid://yrw2od6yq6bl" path="res://Main Player/Script/Hitbox.gd" id="3_rjd80"]
 [ext_resource type="Animation" uid="uid://c7die8llpj3wb" path="res://Enemy/sword_slash_enemy.anim.res" id="6_b7jwc"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_l03h4"]

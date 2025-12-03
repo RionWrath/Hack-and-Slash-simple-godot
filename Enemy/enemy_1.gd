@@ -1,5 +1,5 @@
 # ============================================================================
-# Script AI Musuh (Godot 4.4 - Dengan Logika Knockback & State)
+# Script AI Musuh (Godot 4.4 - Final dengan Knockback)
 # ============================================================================
 extends CharacterBody3D
 
@@ -26,7 +26,7 @@ const DamageNumberScene = preload("res://Scene/DamageNumber.tscn")
 @onready var enemy_hitbox_shape: CollisionShape3D = $Skin/CharacterArmature/Skeleton3D/Sword/Sword/Hitbox/CollisionShape3D
 @onready var hurt_timer: Timer = $HurtTimer
 @onready var attack_timer: Timer = $AttackTimer
-@onready var knockback_timer: Timer = $KnockbackTimer # BARU: Referensi ke KnockbackTimer
+@onready var knockback_timer: Timer = $KnockbackTimer # Node Timer Wajib Ada
 
 # --- Variabel Internal ---
 var player: Node3D = null
@@ -34,7 +34,7 @@ var start_position: Vector3
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 var is_attacking: bool = false
 
-# DIUBAH: Tambahkan state KNOCKBACK
+# Definisi State
 enum State { IDLE, CHASING, ATTACKING, HURT, DEAD, RETURNING, KNOCKBACK }
 var state = State.IDLE
 
@@ -51,7 +51,7 @@ func _ready():
 	health_component.took_damage.connect(_on_took_damage)
 	hurt_timer.timeout.connect(_on_hurt_timer_timeout)
 	attack_timer.timeout.connect(_on_attack_timer_timeout)
-	knockback_timer.timeout.connect(_on_knockback_timer_timeout) # BARU: Hubungkan sinyal KnockbackTimer
+	knockback_timer.timeout.connect(_on_knockback_timer_timeout)
 
 func _physics_process(delta):
 	if state == State.DEAD: return
@@ -72,15 +72,12 @@ func _physics_process(delta):
 			_state_returning(delta)
 		State.HURT:
 			_stop_movement()
-		# BARU: Logika untuk state KNOCKBACK
 		State.KNOCKBACK:
-			# Saat terdorong, AI normal tidak berjalan.
-			# Kita hanya mengurangi kecepatannya secara bertahap (efek gesekan).
+			# Efek gesekan: perlambat dorongan secara bertahap
 			velocity = velocity.lerp(Vector3.ZERO, delta * 5.0)
 	
 	move_and_slide()
 
-# ... (Logika State lain tetap sama) ...
 # ============================================================================ #
 # Logika State
 # ============================================================================ #
@@ -125,28 +122,30 @@ func _state_returning(delta):
 # ============================================================================ #
 # Fungsi Aksi & Sinyal
 # ============================================================================ #
-# BARU: Fungsi ini dipanggil saat durasi knockback selesai
-func _on_knockback_timer_timeout():
-	if state == State.KNOCKBACK:
-		# Kembalikan musuh ke state normal (mengejar player)
-		state = State.CHASING
 
-# DIUBAH: Fungsi apply_knockback sekarang mengatur state dan timer
+# --- Logika Knockback ---
 func apply_knockback(direction: Vector3, force: float):
-	# Jangan proses jika musuh sudah mati atau sedang terdorong
+	# Jangan di-knockback kalau sudah mati atau sedang knockback
 	if state in [State.DEAD, State.KNOCKBACK, State.HURT]: return
 
 	state = State.KNOCKBACK
+	
+	# Hitung vektor dorongan
 	var knockback_vector = direction.normalized() * force
 	knockback_vector.y = 0
 	
-	# Gunakan '=' untuk menimpa kecepatan saat ini dengan kekuatan dorongan
-	velocity = knockback_vector 
+	# Override velocity saat ini dengan dorongan
+	velocity = knockback_vector
 	
-	# Musuh akan berada dalam state knockback selama 0.3 detik
+	# Mulai timer (misal 0.3 detik durasi terpental)
 	knockback_timer.start(0.3)
 
-# ... (Fungsi-fungsi lain tetap sama) ...
+func _on_knockback_timer_timeout():
+	if state == State.KNOCKBACK:
+		# Kembali mengejar player setelah berhenti terpental
+		state = State.CHASING
+# ------------------------
+
 func _move_towards(target_pos, speed):
 	nav_agent.target_position = target_pos
 	if nav_agent.is_navigation_finished():
@@ -182,6 +181,7 @@ func _on_hurt_timer_timeout():
 			state = State.RETURNING
 
 func _on_took_damage(amount: int):
+	# Jika sedang Knockback, jangan di-interrupt oleh animasi Hurt biasa
 	if state in [State.DEAD, State.HURT, State.KNOCKBACK]: return
 	
 	state = State.HURT
@@ -215,7 +215,7 @@ func _update_rotation(target_pos, delta):
 		skin.global_transform = skin.global_transform.looking_at(global_position - dir_to_target, Vector3.UP)
 
 func _update_animation(speed):
-	# Jangan update animasi gerak jika dalam state yang tidak relevan
+	# Jangan update animasi jalan jika sedang dalam state khusus
 	if state in [State.ATTACKING, State.HURT, State.DEAD, State.KNOCKBACK]: return
 	
 	var blend_position = 0.0
