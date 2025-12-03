@@ -62,3 +62,35 @@ layout_mode = 2
 [node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/SkillContainer/SkillSlot_Q"]
 layout_mode = 2
 text = "Q"
+
+[node name="EnemyBoss" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="EnemyBoss"]
+layout_mode = 0
+offset_left = 550.0
+offset_top = 563.0
+offset_right = 643.0
+offset_bottom = 586.0
+scale = Vector2(1.25606, 1.25606)
+text = "Boss Enemy"
+
+[node name="HealthBar2" type="ProgressBar" parent="EnemyBoss"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+offset_left = 242.0
+offset_top = 596.0
+offset_right = 555.0
+offset_bottom = 623.0
+scale = Vector2(2.35202, 0.986734)
+mouse_filter = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_gs7re")
+value = 100.0
+show_percentage = false
