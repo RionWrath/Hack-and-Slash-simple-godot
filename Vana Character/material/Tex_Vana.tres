@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://bhhaswsyer8b0"]
+
+[ext_resource type="Texture2D" uid="uid://bijl1hwca4orx" path="res://Vana Character/Texture UV Map Vana.png" id="1_otepp"]
+
+[resource]
+resource_name = "Tex_Vana"
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_otepp")
+emission_enabled = true
