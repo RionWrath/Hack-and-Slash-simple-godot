@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cmcc370ymueu5"]
 
-[ext_resource type="PackedScene" uid="uid://bfs8d6ya45q7n" path="res://Main Player/player_new.tscn" id="2_vh4eo"]
 [ext_resource type="PackedScene" uid="uid://vp7vpukmulns" path="res://Scene/hud.tscn" id="3_1btii"]
+[ext_resource type="PackedScene" uid="uid://c2cowkwejcfe" path="res://Vana Character/Vana_main_Char.tscn" id="3_44mwd"]
 [ext_resource type="PackedScene" uid="uid://cij121lnxfjeh" path="res://Enemy/enemy1.tscn" id="3_htkpn"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_vh4eo"]
@@ -16,12 +16,6 @@ polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
 transform = Transform3D(1, 0, 0, 0, -0.666806, 0.745232, 0, -0.745232, -0.666806, 0, 17.3301, 0)
 shadow_enabled = true
 
-[node name="Player" parent="." instance=ExtResource("2_vh4eo")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.61107, 1.07615, 8.37204)
-attack_animation_speed = 100.0
-run_speed = 5.0
-jump_impulse = 3.0
-
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.85194)
 navigation_mesh = SubResource("NavigationMesh_vh4eo")
@@ -32,6 +26,13 @@ use_collision = true
 
 [node name="CSGBox3D" type="CSGBox3D" parent="NavigationRegion3D/CSGCombiner3D"]
 transform = Transform3D(64.2757, 0, 0, 0, 1, 0, 0, 0, 51.989, 0, 0, 0)
+
+[node name="Player" parent="." instance=ExtResource("3_44mwd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.73952, 1.57288, 5.88915)
+move_speed = 3.0
+run_speed = 5.0
+jump_impulse = 4.0
+animation_smooth_speed = 20.0
 
 [node name="ENEMY" type="Node" parent="."]
 

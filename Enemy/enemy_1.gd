@@ -28,11 +28,16 @@ const DamageNumberScene = preload("res://Scene/DamageNumber.tscn")
 @onready var attack_timer: Timer = $AttackTimer
 @onready var knockback_timer: Timer = $KnockbackTimer # Node Timer Wajib Ada
 
+@onready var hp_bar_viewport = $HealthBarWidget/SubViewport/ProgressBar # Path ke ProgressBar
+@onready var hp_bar_sprite = $HealthBarWidget # Path ke Sprite3D
+
 # --- Variabel Internal ---
 var player: Node3D = null
 var start_position: Vector3
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 var is_attacking: bool = false
+
+
 
 # Definisi State
 enum State { IDLE, CHASING, ATTACKING, HURT, DEAD, RETURNING, KNOCKBACK }
@@ -52,6 +57,27 @@ func _ready():
 	hurt_timer.timeout.connect(_on_hurt_timer_timeout)
 	attack_timer.timeout.connect(_on_attack_timer_timeout)
 	knockback_timer.timeout.connect(_on_knockback_timer_timeout)
+	health_component.health_changed.connect(_on_health_changed)
+	
+	var max_hp = health_component.max_health # Asumsi ada variabel max_health di component
+	var current_hp = health_component.current_health
+	
+	_update_health_bar(current_hp, max_hp)
+	
+	
+func _update_health_bar(current, max_val):
+	if hp_bar_viewport:
+		hp_bar_viewport.max_value = max_val
+		hp_bar_viewport.value = current
+		
+	# Opsional: Sembunyikan bar jika darah penuh (biar layar bersih)
+	# hp_bar_sprite.visible = current < max_val
+	
+func _on_health_changed(new_health):
+	# Ambil max health (jika statis bisa pakai angka langsung, misal 100)
+	var max_hp = 100 # Atau ambil dari health_component.max_health jika ada
+	_update_health_bar(new_health, max_hp)
+	
 
 func _physics_process(delta):
 	if state == State.DEAD: return

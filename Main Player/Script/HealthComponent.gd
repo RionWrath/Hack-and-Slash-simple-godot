@@ -9,9 +9,13 @@ signal died
 # Variabel health
 @export var max_health: float = 100.0
 var current_health: float
+@onready var hp_bar_viewport = $HealthBarWidget/SubViewport/ProgressBar # Path ke ProgressBar
+@onready var hp_bar_sprite = $HealthBarWidget # Path ke Sprite3D
 
 func _ready():
 	current_health = max_health
+	
+	
 
 # Fungsi untuk mengurangi health
 func take_damage(damage_amount: float):
@@ -26,3 +30,7 @@ func take_damage(damage_amount: float):
 
 	if current_health <= 0:
 		emit_signal("died")
+
+
+func _on_area_entered(area: Area3D) -> void:
+	pass # Replace with function body.
