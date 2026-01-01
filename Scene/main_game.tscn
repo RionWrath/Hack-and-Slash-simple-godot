@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://cij121lnxfjeh" path="res://Enemy/enemy1.tscn" id="3_htkpn"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_vh4eo"]
-vertices = PackedVector3Array(-31.6378, 1, -25.4945, -31.6378, 1, 25.5055, 31.6122, 1, 25.5055, 31.6122, 1, -25.4945)
+vertices = PackedVector3Array(-31.6379, 1, -25.4945, -31.6379, 1, 25.5055, 31.6121, 1, 25.5055, 31.6121, 1, -25.4945)
 polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
 
 [node name="Main Game" type="Node"]
@@ -28,7 +28,8 @@ use_collision = true
 transform = Transform3D(64.2757, 0, 0, 0, 1, 0, 0, 0, 51.989, 0, 0, 0)
 
 [node name="Player" parent="." instance=ExtResource("3_44mwd")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.73952, 1.57288, 5.88915)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.73952, 0.589205, 5.88915)
+lunge_stop_distance = 2.0
 move_speed = 3.0
 run_speed = 5.0
 jump_impulse = 4.0

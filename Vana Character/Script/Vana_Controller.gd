@@ -1,5 +1,5 @@
 # ============================================================================
-# Script Kontroler Karakter 3D (Player - Fix Damage & Self Hit)
+# Script Kontroler Karakter 3D (Player - Auto Target & Combo Scaling)
 # ============================================================================
 extends CharacterBody3D
 
@@ -11,8 +11,11 @@ const SkillEffectScene = preload("res://Scene/skill_effect.tscn")
 # VARIABEL PENGATURAN (EXPORT)
 # ============================================================================
 
+@export_group("Combat Stats")
+# Damage untuk serangan ke-1, ke-2, dan ke-3
+@export var combo_damages: Array[int] = [15, 20, 30] 
+
 @export_group("Gameplay")
-@export var base_damage: int = 15          # PERBAIKAN: Damage dasar pukulan biasa
 @export var can_be_stunned: bool = true
 @export var hurt_duration: float = 0.6
 @export var attack_animation_speed: float = 1.5
@@ -23,18 +26,18 @@ const SkillEffectScene = preload("res://Scene/skill_effect.tscn")
 @export var heavy_skill_knockback: float = 16.0
 @export var heavy_skill_damage: int = 25
 
-@export_group("Attack Lunge")
-@export var lunge_max_distance: float = 6.0
-@export var lunge_stop_distance: float = 1.0
+@export_group("Attack Lunge & Targeting")
+@export var lunge_max_distance: float = 8.0        # Jarak maksimal Auto-Target mendeteksi musuh
+@export var lunge_stop_distance: float = 1.2       # Jarak berhenti di depan musuh
 @export var lunge_duration: float = 0.15
-@export var lunge_snap_rotation_duration: float = 0.05
+@export var lunge_snap_rotation_duration: float = 0.05 # Kecepatan putar ke musuh (makin kecil makin instan)
 
 @export_group("Movement")
 @export var move_speed: float = 4.0
 @export var run_speed: float = 7.0
 @export var jump_impulse: float = 8.0
 @export var rotation_speed: float = 15.0
-@export var animation_smooth_speed: float = 10.0 # Untuk transisi animasi mulus
+@export var animation_smooth_speed: float = 10.0
 
 @export_group("Character Height")
 @export var stand_height: float = 1.8
@@ -55,10 +58,8 @@ const SkillEffectScene = preload("res://Scene/skill_effect.tscn")
 @onready var combo_timer: Timer = $ComboTimer
 @onready var hurt_timer: Timer = $HurtTimer
 @onready var health_component = $HealthComponent
-@onready var targeting_area: Area3D = $TargetingArea
+@onready var targeting_area: Area3D = $TargetingArea # Pastikan Node ini ada dan cukup besar!
 
-# --- PERBAIKAN PENTING: Referensi Area3D dan CollisionShape ---
-# Kita butuh Area3D untuk sinyal, dan CollisionShape untuk enable/disable
 @onready var right_hand_area: Area3D = $Skin/metarig/Skeleton3D/HitBoxRight
 @onready var right_hitbox_shape: CollisionShape3D = $Skin/metarig/Skeleton3D/HitBoxRight/CollisionShape3D
 
@@ -75,35 +76,30 @@ enum State { MOVE, ATTACK, SKILL, HURT, DEAD }
 var state = State.MOVE
 
 var combo_counter: int = 0
-var hit_enemies_in_frame = [] # Agar satu pukulan tidak memberi damage berkali-kali ke musuh yang sama
+var hit_enemies_in_frame = [] 
 
 # ============================================================================
 # FUNGSI UTAMA GODOT
 # ============================================================================
 
 func _ready() -> void:
-	# PERBAIKAN 1: Pastikan Player masuk Group "player" agar dikejar musuh
 	add_to_group("player") 
 	
 	animation_tree.active = true
 	anim_playback = animation_tree.get("parameters/playback")
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
-	# Setup Sinyal
 	combo_timer.timeout.connect(_reset_combo)
 	animation_player.animation_finished.connect(_on_animation_finished)
 	health_component.died.connect(_on_death)
 	health_component.took_damage.connect(_on_took_damage)
 	hurt_timer.timeout.connect(_on_hurt_timer_timeout)
 	
-	# PERBAIKAN 2: Hubungkan sinyal serangan lewat kode
-	# Ini mendeteksi saat tangan menyentuh musuh
 	if right_hand_area:
 		right_hand_area.body_entered.connect(_on_attack_hitbox_entered)
 	if left_hand_area:
 		left_hand_area.body_entered.connect(_on_attack_hitbox_entered)
 
-	# Setup UI Health
 	health_component.health_changed.connect(
 		func(health):
 			if GameManager: GameManager.update_player_health(health)
@@ -111,7 +107,7 @@ func _ready() -> void:
 	if GameManager:
 		GameManager.update_player_health(health_component.current_health)
 
-	disable_all_hitboxes() # Matikan hitbox di awal agar aman
+	call_deferred("disable_all_hitboxes")
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
@@ -158,7 +154,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 # ============================================================================
-# LOGIKA PERGERAKAN (DENGAN LERP MULUS)
+# LOGIKA PERGERAKAN
 # ============================================================================
 
 func _handle_locomotion_movement(delta: float):
@@ -208,26 +204,23 @@ func _update_animations() -> void:
 		anim_playback.travel(target_anim_state)
 
 # ============================================================================
-# LOGIKA SERANGAN, DAMAGE & SKILL (PERBAIKAN UTAMA DI SINI)
+# LOGIKA SERANGAN (AUTO TARGETING ADA DI SINI)
 # ============================================================================
 
-# PERBAIKAN 3: Fungsi ini dipanggil saat Hitbox Tangan menyentuh Sesuatu
 func _on_attack_hitbox_entered(body: Node3D):
-	# 1. PENCEGAHAN DAMAGE DIRI SENDIRI
 	if body == self: return 
-	
-	# 2. Pastikan yang dipukul adalah Musuh
+	if state != State.ATTACK: return
+
 	if body.is_in_group("enemy"):
-		# 3. Cek apakah musuh ini sudah kena di pukulan frame ini?
 		if body in hit_enemies_in_frame: return
 		
-		hit_enemies_in_frame.append(body) # Tandai sudah kena
+		hit_enemies_in_frame.append(body)
 		
-		# 4. Berikan Damage (Pastikan enemy punya HealthComponent)
+		var damage_index = clampi(combo_counter - 1, 0, combo_damages.size() - 1)
+		var actual_damage = combo_damages[damage_index]
+		
 		if body.has_node("HealthComponent"):
-			body.get_node("HealthComponent").take_damage(base_damage)
-		
-		# Efek visual opsional (partikel darah, suara, dll) bisa ditaruh di sini
+			body.get_node("HealthComponent").take_damage(actual_damage)
 
 func _handle_attack_input() -> void:
 	if not is_on_floor(): return
@@ -237,25 +230,35 @@ func _handle_attack_input() -> void:
 		
 		state = State.ATTACK
 		combo_counter += 1
-		hit_enemies_in_frame.clear() # Reset daftar musuh kena untuk serangan baru
+		hit_enemies_in_frame.clear() 
 		
+		# --- AUTO TARGETING LOGIC MULAI ---
 		var target = _find_best_attack_target()
 		
 		if is_instance_valid(target):
+			# 1. Hitung arah ke musuh
+			var direction = global_position.direction_to(target.global_position)
+			
+			# 2. Hitung rotasi yang harus dilakukan
+			var target_yaw = atan2(direction.x, direction.z)
+			
+			# 3. Hitung jarak
 			var distance = global_position.distance_to(target.global_position)
 			
-			if distance <= lunge_max_distance:
-				var direction = global_position.direction_to(target.global_position)
+			# 4. Setup Tween untuk memutar badan + maju (lunge)
+			var tween = create_tween().set_parallel(true)
+			tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+			
+			# ROTASI: Paksa player menghadap musuh (sangat cepat)
+			# NOTE: Jika model Anda terbalik, tambahkan '+ PI' setelah target_yaw
+			tween.tween_property(skin, "rotation:y", target_yaw, lunge_snap_rotation_duration)
+			
+			# MAJU (LUNGE): Jika musuh agak jauh, player "terbang" sedikit ke arah musuh
+			if distance <= lunge_max_distance and distance > lunge_stop_distance:
 				var dest = target.global_position - direction * lunge_stop_distance
 				dest.y = global_position.y
-				
-				var target_yaw = atan2(direction.x, direction.z)
-				var tween = create_tween().set_parallel(true)
-				tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
-				tween.tween_property(skin, "rotation:y", target_yaw, lunge_snap_rotation_duration)
-				
-				if distance > lunge_stop_distance:
-					tween.tween_property(self, "global_position", dest, lunge_duration)
+				tween.tween_property(self, "global_position", dest, lunge_duration)
+		# --- AUTO TARGETING LOGIC SELESAI ---
 		
 		animation_tree.set("parameters/TimeScale/scale", attack_animation_speed)
 		anim_playback.travel("Attack" + str(combo_counter))
@@ -280,12 +283,15 @@ func _use_skill(knockback_force: float, damage_amount: int):
 	if state == State.SKILL:
 		state = State.MOVE
 
+# Fungsi Mencari Musuh "Terbaik" (Terdekat & Paling Depan)
 func _find_best_attack_target() -> Node3D:
 	var bodies = targeting_area.get_overlapping_bodies()
 	if bodies.is_empty(): return null
 
 	var best_target: Node3D = null
 	var best_score = -INF
+	
+	# Prioritas arah: Arah Input (WASD) kalau ada, kalau tidak pakai arah Kamera
 	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 	var priority_dir = -spring_arm.global_transform.basis.z.normalized()
 	
@@ -298,12 +304,19 @@ func _find_best_attack_target() -> Node3D:
 		var dir_to = global_position.direction_to(body.global_position)
 		var dist = global_position.distance_to(body.global_position)
 
+		# Abaikan jika di luar jarak lunge
 		if dist > lunge_max_distance: continue
 			
-		var score = (priority_dir.dot(dir_to) * 1.5) + (1.0 - (dist / lunge_max_distance))
+		# SKORING:
+		# Angle Score: Seberapa pas musuh ada di depan kita? (bobot 1.5)
+		# Distance Score: Seberapa dekat musuh? (bobot 1.0)
+		var angle_score = priority_dir.dot(dir_to) 
+		var distance_score = 1.0 - (dist / lunge_max_distance)
 		
-		if score > best_score:
-			best_score = score
+		var total_score = (angle_score * 1.5) + distance_score
+		
+		if total_score > best_score:
+			best_score = total_score
 			best_target = body
 			
 	return best_target
@@ -364,7 +377,7 @@ func _on_animation_finished(anim_name: StringName):
 
 func enable_right_hand():
 	if right_hitbox_shape: right_hitbox_shape.disabled = false
-	hit_enemies_in_frame.clear() # Reset setiap kali pukulan baru keluar
+	hit_enemies_in_frame.clear() 
 
 func enable_left_hand():
 	if left_hitbox_shape: left_hitbox_shape.disabled = false
